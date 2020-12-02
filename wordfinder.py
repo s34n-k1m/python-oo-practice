@@ -6,6 +6,21 @@ class WordFinder:
     >>> words = WordFinder("/usr/share/dict/words")
     235886 words read
 
+    # generator expression
+    >>> all(words.random() in words.words for _ in range(10))
+    True
+    >>> for x in range(10):
+    ...     words.random() in words.words
+    True
+    True
+    True
+    True
+    True
+    True
+    True
+    True
+    True
+    True
     """
 
     def __init__(self, path):
