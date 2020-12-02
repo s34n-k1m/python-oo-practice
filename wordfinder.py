@@ -7,23 +7,41 @@ class WordFinder:
     235886 words read
 
     """
-   
+
     def __init__(self, path):
         """Makes a list of words from file in path
         and returns how many words it read"""
-        self.words = open(path, 'r')
-        self.words_list = self.make_word_list()
-        print(self.count_words(self.words_list))
+        file_contents = open(path)
+        self.words = self.make_words(file_contents)
+        print(len(self.words), "words read")
 
     def __repr__(self):
-        return f"<WordFinder words_list={self.words_list}>"
+        return f"<{type(self)} words={self.words}>"
 
-    def make_word_list(self):
+    def make_words(self, file_contents):
         """makes list of stripped words from file"""
-        return [word.strip() for word in self.words.readlines()]
+        return [word.strip() for word in file_contents]
 
     def count_words(self, stripped_words):
+        """Returns count of words from file"""
         return f"{len(stripped_words)} words read"
 
     def random(self):
-        return choice(self.words_list)
+        """Returns a random word from the list of words"""
+        return choice(self.words)
+
+
+class SpecialWordFinder(WordFinder):
+    """SpecialWordFinder: ignores line comments and
+    blank lines from file."""
+
+    def make_words(self, file_contents):
+        """Returns a list of words with blank lines and
+        comment lines filtered out
+
+        >>> special_words = SpecialWordFinder("specialwords.txt")
+        4 words read
+        """
+
+        return [word.strip() for word in file_contents
+                if word.strip() and not word.startswith("#")]
